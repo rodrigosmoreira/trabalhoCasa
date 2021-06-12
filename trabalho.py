@@ -93,32 +93,45 @@ def constroiPersonalizadoComFrame(vertices, faces, cor, nome):
     constroiMalha('Frame', cor, vertices, faces, True, nome)
 
 def constroiMalha(tipo, cor, vertices, faces, comFrame, nome):
+    bpy.context.view_layer.active_layer_collection.collection.objects.link(criaObjetoComMalha(tipo, cor, vertices, faces, comFrame, nome))
+
+def criaObjetoComMalha(tipo, cor, vertices, faces, comFrame, nome):
+    objeto = bpy.data.objects.new(nome, criaMalha(nome, vertices, faces))
+    
+    atribuiCor(objeto, cor, nome)
+
+    if comFrame :
+        objeto.modifiers.new("frameForm", 'WIREFRAME')
+
+    return objeto
+
+def criaMalha(nome, vertices, faces):
     malha = bpy.data.meshes.new(nome);
     malha.from_pydata(vertices, [], faces)
     malha.update()
-    
-    object = bpy.data.objects.new(nome, malha)
-    atribuiCor(object, cor, nome)
 
-    if comFrame :
-        object.modifiers.new("frameForm", 'WIREFRAME')
-    
-    view_layer = bpy.context.view_layer
-    view_layer.active_layer_collection.collection.objects.link(object)
+    return malha
 
-def atribuiCor(object, cor, nome):
+def atribuiCor(objeto, cor, nome):
+    material = criaMaterialComCor(nome, cor)
+    
+    if objeto.data.materials:
+        objeto.data.materials[0] = material
+    else:
+        objeto.data.materials.append(material)
+
+def criaMaterialComCor(nome, cor):
     material = bpy.data.materials.new(name = nome)
     material.use_nodes = True
-    
-    imagem = material.node_tree.nodes.new('ShaderNodeTexImage')
-    imagem.image = bpy.data.images.load(cor)
-    
-    material.node_tree.links.new(material.node_tree.nodes["Principled BSDF"].inputs['Base Color'], imagem.outputs['Color'])
-    
-    if object.data.materials:
-        object.data.materials[0] = material
-    else:
-        object.data.materials.append(material)
+    material.node_tree.links.new(material.node_tree.nodes["Principled BSDF"].inputs['Base Color'], criaCor(cor, material))
+
+    return material
+
+def criaCor(cor, material):
+    corMaterial = material.node_tree.nodes.new('ShaderNodeTexImage')
+    corMaterial.image = bpy.data.images.load(cor)
+
+    return corMaterial.outputs['Color']
     
 def getCorVerde():
     return  pastaRaizTrabalho + "\\cores\\verde.png"
@@ -140,13 +153,11 @@ def renderizaModelo():
     objetoCenario = bpy.context.collection
 
     ajustaConfiguracaoCenario()
-    
-    removeCameras()
 
     criaLuzes(objetoCenario)
 
     criaCameras(cenario, objetoCenario)
-
+    
     renderizaVistas(cenario)
 
 def ajustaConfiguracaoCenario():
@@ -154,13 +165,6 @@ def ajustaConfiguracaoCenario():
     
     configuracao.scenes[0].render.resolution_x = 3840
     configuracao.scenes[0].render.resolution_y = 2160
-
-def removeCameras():
-    bpy.ops.object.select_all(action = 'DESELECT')
-    bpy.ops.object.select_by_type(type = 'CAMERA')
-    bpy.ops.object.delete()
-    bpy.ops.object.select_by_type(type = 'LIGHT')
-    bpy.ops.object.delete()
 
 def criaLuzes(objetoCenario):
     criaLuz(1500, (-5, 3, 8), objetoCenario, "LuzLateralEsquerda")
@@ -178,11 +182,12 @@ def criaLuz(energia, localizacao, objetoCenario, nome):
     objetoLuz.location = localizacao
 
 def criaCameras(cenario, objetoCenario):
-    criaCamera(cenario, objetoCenario, mathutils.Vector((3, 19, 2.5)), mathutils.Euler((48.69, 135.09, 0)), "Traseira")
-    criaCamera(cenario, objetoCenario, mathutils.Vector((3, 3, 20)), mathutils.Euler((0, 0, 0)), "Superior")
-    criaCamera(cenario, objetoCenario, mathutils.Vector((3, -13, 2.5)), mathutils.Euler((-48.69, 0, 0)), "Frontal")
-    criaCamera(cenario, objetoCenario, mathutils.Vector((19, 3, 2.2)), mathutils.Euler((190.09, 0, -48.69)), "LateralDireita")
-    criaCamera(cenario, objetoCenario, mathutils.Vector((-13, 3, 2.2)), mathutils.Euler((190.09, 0, 48.69)), "LateralEsquerda")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((3, 22, 2.5)), mathutils.Euler((48.69, 135.09, 0)), "Traseira")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((3, 3, 23)), mathutils.Euler((0, 0, 0)), "Superior")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((3, -16, 2.5)), mathutils.Euler((-48.69, 0, 0)), "Frontal")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((22, 3, 2.2)), mathutils.Euler((190.09, 0, -48.69)), "LateralDireita")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((-16, 3, 2.2)), mathutils.Euler((190.09, 0, 48.69)), "LateralEsquerda")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((-10, -10, 10)), mathutils.Euler((20, 0, 150.02)), "EmPerspectiva")
 
 def criaCamera(cenario, objetoCenario, localizacao, rotacao, nome):
     camera = bpy.data.cameras.new(nome)
