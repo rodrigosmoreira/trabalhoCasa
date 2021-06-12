@@ -12,9 +12,7 @@ def constroiModelo():
 def constroiJardim():
     cor = getCorVerde()
     
-    constroiPlano([(0,0,0),(0,3,0),(3,3,0),(3,0,0)], cor, "Jardim1")
-
-    constroiPlano([(0, 3, 0), (3, 3, 0), (3, 6, 0), (0, 6, 0)], cor, "Jardim2")
+    constroiPlano([(0,0,0),(0,6,0),(3,6,0),(3,0,0)], cor, "Jardim")
 
 def constroiCasa():
     constroiParteDaFrenteDaCasa()
@@ -23,39 +21,29 @@ def constroiCasa():
 
     constroiParteLateralDaCasa()
 
-    constroiParteSuperiorDaCasa()
+    constroiTelhadoDaCasa()
 
-    constroiParteInferiorDaCasa()
+    constroiPisoDaCasa()
 
 def constroiParteDaFrenteDaCasa():
     constroiPortaDaFrenteDaCasa()
     constroiParedeDaFrenteDaCasa()
 
 def constroiPortaDaFrenteDaCasa():
-    constroiCubo(getVerticesPortaDaFrenteDaCasa(), getCorMarrom(), "PortaDaFrente")
-
-def getVerticesPortaDaFrenteDaCasa():
-    ma = 0.05
-    b = 2.1
-    c = 0.011
-
-    return [(4 + ma, 0,0 ),(4 + ma, c, 0),(5 - ma,c,0),(5 - ma, 0, 0), (4 + ma, 0, b), (4 + ma, c, b), (5 - ma, c, b), (5 - ma, 0, b)]
+    constroiCubo([(4.05, 0, 0), (4.05, 0.011, 0), (4.95, 0.011, 0), (4.95, 0, 0), (4.05, 0, 2.1), (4.05, 0.011, 2.1), (4.95, 0.011, 2.1), (4.95, 0, 2.1)], getCorMarrom(), "PortaDaFrente")
 
 def constroiParedeDaFrenteDaCasa():
-    constroiPersonalizado(getVerticesParedeDaFrenteDaCasa(), [(0, 4, 5, 6, 7, 8, 9, 3)], getCorAzul(), "ParedeDaFrente")
+    constroiPersonalizado([(3, 0, 0), (3, 3, 0), (3, 3, 3), (3, 0, 3), (4.04, 0, 0), (4.04, 0, 2.11), (4.96, 0, 2.11), (4.96, 0, 0), (6, 0, 0), (6, 0, 3), (6, 3, 3), (6, 3, 0)], [(0, 4, 5, 6, 7, 8, 9, 3)], getCorAzul(), "ParedeDaFrente")
 
-    
-
-def getVerticesParedeDaFrenteDaCasa():
-    na = 0.040
-    
-    return [(3,0,0), (3,3,0), (3,3,3), (3,0,3), (4+na,0,0), (4+na,0,2.11), (5-na,0,2.11), (5-na,0,0), (6,0,0), (6,0,3), (6,3,3), (6,3,0)]
+    constroiPersonalizado([(3, 0, 3), (4.5, 0, 4), (6, 0, 3) ], [(1, 2, 0)], getCorAzul(), "ParedeDaFrenteTelhado")
 
 def constroiParteTraseiraDaCasa():
     constroiParedeTraseiraDaCasa()
 
 def constroiParedeTraseiraDaCasa():
-    constroiPlano([(6, 6, 0), (6, 6, 3), (3, 6, 3), (3, 6, 0)], getCorAzul(), "ParedeTraseira1")
+    constroiPlano([(6, 6, 0), (6, 6, 3), (3, 6, 3), (3, 6, 0)], getCorAzul(), "ParedeTraseira")
+    
+    constroiPersonalizado([(3, 6, 3), (4.5, 6, 4), (6, 6, 3) ], [(1, 2, 0)], getCorAzul(), "ParedeTraseiraTelhado")
 
 def constroiParteLateralDaCasa():
     constroiParteLateralDireitaDaCasa()
@@ -65,52 +53,32 @@ def constroiParteLateralDireitaDaCasa():
     constroiParedeLateralDireitaDaCasa()
 
 def constroiParedeLateralDireitaDaCasa():
-    constroiPersonalizado(getVerticesParedeDaFrenteDaCasa(), [(11, 8, 9, 10)], getCorAzul(), "ParedeLateralDireita1")
-
-    constroiPlano([(6, 3, 0), (6, 6, 0), (6, 6, 3), (6, 3, 3)], getCorAzul(), "ParedeLateralDireita2")
+    constroiPlano([(6, 0, 0), (6, 6, 0), (6, 6, 3), (6, 0, 3)], getCorAzul(), "ParedeLateralDireita")
     
 def constroiParteLateralEsquerdaDaCasa():
     constroiParedeLateralEsquerdaDaCasa()
 
-    constroiJanelaLateralEsquerdaDaCasa()
+    constroiJanelaEsquerdaDaCasa()
 
 def constroiParedeLateralEsquerdaDaCasa():
-    constroiPersonalizado(getVerticesParedeDaFrenteDaCasa(), [(0, 3, 2, 1)], getCorAzul(), "ParedeLateralEsquerda1")
-    
-    constroiPersonalizado([(3, 5, 1), (3, 5, 2), (3, 4, 2), (3, 4, 1), (3, 6, 0), (3, 6, 3), (3, 3, 3), (3, 3, 0)], [(4, 0, 3, 7), (7, 3, 2, 6), (6, 2, 1, 5), (5, 1, 0, 4)], getCorAzul(), "ParedeLateralEsquerda2ComJanela")
+    constroiPersonalizado([(3, 3, 1), (3, 3, 2.2), (3, 1, 2.2), (3, 1, 1), (3, 6, 0), (3, 6, 3), (3, 0, 3), (3, 0, 0)], [(4, 0, 3, 7), (7, 3, 2, 6), (6, 2, 1, 5), (5, 1, 0, 4)], getCorAzul(), "ParedeLateralEsquerda")
 
-def constroiJanelaLateralEsquerdaDaCasa():
-    constroiPersonalizadoComFrame([(3, 5, 1), (3, 5, 2), (3, 4, 2), (3, 4, 1) ], [(0, 1, 2, 3)], getCorAzul(), "JanelaLateralEsquerda")
+def constroiJanelaEsquerdaDaCasa():
+    constroiPersonalizadoComFrame([(3, 3, 1), (3, 3, 2.2), (3, 1, 2.2), (3, 1, 1) ], [(0, 1, 2, 3)], getCorAzul(), "JanelaEsquerda")
 
-def constroiParteSuperiorDaCasa():
-    constroiTelhado()
-
-    constroiTelhas()
-
-def constroiTelhado():
+def constroiTelhadoDaCasa():
     cor = getCorMarrom()
     
-    constroiPersonalizado([(3, 0, 3), (4.5, 0, 4), (6, 0, 3) ], [(1, 2, 0)], cor, "Telhado1")
+    constroiPersonalizado([(3, 0, 3), (4.5, 0, 4), (4.5, 6, 4), (3, 6, 3)], [(0, 1, 2, 3)], cor, "TelhadoEsquerda")
 
-    constroiPersonalizado([(3, 6, 3), (4.5, 6, 4), (6, 6, 3) ], [(1, 2, 0)], cor, "Telhado2")
+    constroiPersonalizado([(6, 0, 3), (4.5, 0, 4), (4.5, 6, 4), (6, 6, 3)], [(0, 1, 2, 3)], cor, "TelhadoDireita")
 
-def constroiTelhas():
+def constroiPisoDaCasa():
     cor = getCorMarrom()
     
-    constroiPersonalizado([(3, 0, 3), (4.5, 0, 4), (4.5, 6, 4), (3, 6, 3)], [(0, 1, 2, 3)], cor, "Telhas1")
+    constroiPlano([(3, 0, 0), (3, 6, 0), (6, 6, 0), (6, 0, 0)], cor, "Piso")
 
-    constroiPersonalizado([(6, 0, 3), (4.5, 0, 4), (4.5, 6, 4), (6, 6, 3)], [(0, 1, 2, 3)], cor, "Telhas2")
-
-def constroiParteInferiorDaCasa():
-    cor = getCorMarrom()
-    
-    constroiPlano([(3, 0, 0), (3, 3, 0), (6, 3, 0), (6, 0, 0)], cor, "piso1")
-
-    constroiPlano([(6, 3, 0), (6, 6, 0), (3, 6, 0), (3, 3, 0)], cor, "piso2")
-
-    constroiPlano([(3, 0, 3), (3, 3, 3), (6, 3, 3), (6, 0, 3)], cor, "terraco1")
-
-    constroiPlano([(6, 3, 3), (6, 6, 3), (3, 6, 3), (3, 3, 3)], cor, "terraco2")
+    constroiPlano([(3, 0, 3), (3, 6, 3), (6, 6, 3), (6, 0, 3)], cor, "Terraco")
 
 def constroiPlano(vertices, cor, nome):
     constroiMalha('Plane', cor, vertices, [(0,1,2,3)], False, nome)
@@ -210,11 +178,11 @@ def criaLuz(energia, localizacao, objetoCenario, nome):
     objetoLuz.location = localizacao
 
 def criaCameras(cenario, objetoCenario):
-    criaCamera(cenario, objetoCenario, mathutils.Vector((3, 19, 2.5)), mathutils.Euler((48.69, 135.09, 0)), "CameraTraseira")
-    criaCamera(cenario, objetoCenario, mathutils.Vector((3, 3, 20)), mathutils.Euler((0, 0, 0)), "CameraSuperior")
-    criaCamera(cenario, objetoCenario, mathutils.Vector((3, -13, 2.5)), mathutils.Euler((-48.69, 0, 0)), "CameraFrontal")
-    criaCamera(cenario, objetoCenario, mathutils.Vector((19, 3, 2.2)), mathutils.Euler((190.09, 0, -48.69)), "CameraLateralDireita")
-    criaCamera(cenario, objetoCenario, mathutils.Vector((-13, 3, 2.2)), mathutils.Euler((190.09, 0, 48.69)), "CameraLateralEsquerda")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((3, 19, 2.5)), mathutils.Euler((48.69, 135.09, 0)), "Traseira")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((3, 3, 20)), mathutils.Euler((0, 0, 0)), "Superior")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((3, -13, 2.5)), mathutils.Euler((-48.69, 0, 0)), "Frontal")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((19, 3, 2.2)), mathutils.Euler((190.09, 0, -48.69)), "LateralDireita")
+    criaCamera(cenario, objetoCenario, mathutils.Vector((-13, 3, 2.2)), mathutils.Euler((190.09, 0, 48.69)), "LateralEsquerda")
 
 def criaCamera(cenario, objetoCenario, localizacao, rotacao, nome):
     camera = bpy.data.cameras.new(nome)
@@ -225,18 +193,13 @@ def criaCamera(cenario, objetoCenario, localizacao, rotacao, nome):
     objetoCamera.rotation_euler =  rotacao
 
 def renderizaVistas(cenario):
-    vistaAtual = 0
-
-    nomeVista = ['Traseira', 'Superior', 'Frontal', 'LateralDireita', 'LateralEsquerda']
-
     for objeto in cenario.objects:
         if objeto.type == 'CAMERA':
-            renderizaVistaCamera(objeto, cenario, pastaRaizTrabalho + "vistas\\vista" + nomeVista[vistaAtual])
-            vistaAtual += 1
+            renderizaVistaCamera(objeto, cenario)
 
-def renderizaVistaCamera(objeto, cenario, nomeArquivoVista):
-    bpy.context.scene.camera = objeto
-    cenario.render.filepath = nomeArquivoVista
+def renderizaVistaCamera(camera, cenario):
+    bpy.context.scene.camera = camera
+    cenario.render.filepath = pastaRaizTrabalho + "vistas\\vista" +  camera.name
     bpy.ops.render.render(write_still= True) 
 
 constroiModelo()
